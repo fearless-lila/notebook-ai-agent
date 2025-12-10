@@ -1,0 +1,2 @@
+- Build an AI that analyses my table tennis serves.
+- Make a YouTube series about my AI learning journey.
