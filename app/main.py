@@ -7,9 +7,34 @@ from .embeddings import embed_texts
 from .vector_store import add_documents, query_documents
 from .llm import answer_with_context
 from .storage import load_notes, save_notes
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+
 
 
 app = FastAPI(title="Second Brain Note Assistant")
+
+# Serve static files (HTML/CSS/JS)
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+def serve_landing():
+    index_path = Path("app/static/index.html")
+    return index_path.read_text(encoding="utf-8")
+
+@app.get("/notes-ui", response_class=HTMLResponse)
+def serve_notes_ui():
+    notes_path = Path("app/static/notes.html")
+    return notes_path.read_text(encoding="utf-8")
+
+@app.get("/chat-ui", response_class=HTMLResponse)
+def serve_chat_ui():
+    chat_path = Path("app/static/chat.html")
+    return chat_path.read_text(encoding="utf-8")
+
+
 
 # Simple in-memory store (demo only)
 NOTES_DB: dict[str, dict] = load_notes()

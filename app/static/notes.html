@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notebook AI Agent – Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg-main: #fdf2f8;
+      --bg-panel: #ffffff;
+      --border-soft: #e5e7eb;
+      --border-strong: #d1d5db;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --accent-blue: #3b82f6;
+      --accent-pink: #f472b6;
+      --accent-pink-dark: #ec4899;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-size: 16px;
+
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 820px;
+      padding: 1.5rem;
+    }
+
+    .top-group {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      column-gap: 1rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .circle-back {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid #fb7185;
+      background: #fee2e2;
+      color: #be123c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(248, 113, 113, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+      justify-self: start;
+    }
+
+    .circle-back:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(248, 113, 113, 0.55);
+      background: #fecaca;
+    }
+
+    .circle-back:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(248, 113, 113, 0.45);
+    }
+
+    .logo-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .logo {
+      text-align: center;
+    }
+
+    .logo-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--accent-pink-dark);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 2px rgba(236, 72, 153, 0.45);
+    }
+
+    .logo-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .logo-underline {
+      width: 150px;
+      height: 3px;
+      border-radius: 999px;
+      margin: 0.45rem auto 0;
+      background: linear-gradient(90deg, #f9a8d4, #bfdbfe);
+    }
+
+    .status {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      justify-self: end;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border-radius: 1.1rem;
+      border: 1px solid var(--border-soft);
+      padding: 1.5rem 1.5rem 1.75rem;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+    }
+
+    .panel-header {
+      margin-top: 0.2rem;
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .panel-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 0.2rem 0 0 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      margin-top: 0.4rem;
+      padding: 0.6rem 0.7rem;
+      border-radius: 0.6rem;
+      border: 1px solid var(--border-strong);
+      background: #f9fafb;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      resize: vertical;
+    }
+
+    textarea:focus,
+    input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.18);
+      background: #ffffff;
+    }
+
+    button {
+      margin-top: 0.9rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      align-self: flex-start;
+      box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.1s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(59, 130, 246, 0.28);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .note-section {
+      margin-top: 0.5rem;
+    }
+
+    .notes-list {
+      margin-top: 1rem;
+      padding: 0.75rem 0.75rem 0.5rem;
+      border-radius: 0.8rem;
+      background: #f9fafb;
+      border: 1px solid var(--border-soft);
+      font-size: 0.9rem;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .note-item {
+      padding: 0.5rem 0.25rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .note-item:last-child {
+      border-bottom: none;
+    }
+
+    .note-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .note-content {
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+      white-space: pre-wrap;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 800px) {
+      .page { padding: 1rem; }
+      .panel { padding: 1.25rem 1.25rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top-group">
+      <div class="circle-back" onclick="window.location.href='/'">←</div>
+      <div class="logo-wrapper">
+        <div class="logo">
+          <div class="logo-title">Lila's Notebook</div>
+          <div class="logo-underline"></div>
+          <div class="logo-subtitle">Your AI-powered second brain</div>
+        </div>
+      </div>
+      <span id="server-status" class="status">Checking server...</span>
+    </div>
+
+    <section class="panel">
+      <div class="panel-header">
+        <h2 class="panel-title">Take Notes</h2>
+        <p class="panel-subtitle">
+          Create notes that are saved to <code>notes.json</code> and used by the AI.
+        </p>
+      </div>
+
+      <div class="note-section">
+        <label>
+          Title
+          <input id="note-title" type="text" placeholder="e.g. RAG basics" />
+        </label>
+
+        <label>
+          Content
+          <textarea id="note-content" rows="6" placeholder="Write your note here..."></textarea>
+        </label>
+
+        <button id="save-note-btn" onclick="createNote()">Save note</button>
+        <div id="note-status" class="status"></div>
+      </div>
+
+      <div class="note-section">
+        <div class="notes-list" id="notes-list">
+          <div class="status">Loading notes...</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    async function checkServer() {
+      const el = document.getElementById("server-status");
+      try {
+        const res = await fetch("/notes");
+        if (res.ok) {
+          el.textContent = "Server online";
+        } else {
+          el.textContent = "Server reachable, but /notes returned an error";
+        }
+      } catch (err) {
+        el.textContent = "Cannot reach server. Is uvicorn running?";
+      }
+    }
+
+    async function loadNotes() {
+      const list = document.getElementById("notes-list");
+      list.innerHTML = '<div class="status">Loading notes...</div>';
+
+      try {
+        const res = await fetch("/notes");
+        if (!res.ok) {
+          list.innerHTML = '<div class="status">Failed to load notes.</div>';
+          return;
+        }
+        const notes = await res.json();
+        if (!Array.isArray(notes) || notes.length === 0) {
+          list.innerHTML = '<div class="status">No API-created notes yet. Create one above.</div>';
+          return;
+        }
+
+        list.innerHTML = "";
+        notes.forEach(note => {
+          const item = document.createElement("div");
+          item.className = "note-item";
+
+          const title = document.createElement("div");
+          title.className = "note-title";
+          title.textContent = note.title;
+
+          const content = document.createElement("div");
+          content.className = "note-content";
+          const text = note.content || "";
+          content.textContent = text.length > 300 ? text.slice(0, 300) + "..." : text;
+
+          item.appendChild(title);
+          item.appendChild(content);
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error(err);
+        list.innerHTML = '<div class="status">Error loading notes.</div>';
+      }
+    }
+
+    async function createNote() {
+      const titleEl = document.getElementById("note-title");
+      const contentEl = document.getElementById("note-content");
+      const statusEl = document.getElementById("note-status");
+      const btn = document.getElementById("save-note-btn");
+
+      const title = titleEl.value.trim();
+      const content = contentEl.value.trim();
+
+      if (!title || !content) {
+        statusEl.textContent = "Title and content are required.";
+        return;
+      }
+
+      btn.disabled = true;
+      statusEl.textContent = "Saving note...";
+
+      try {
+        const res = await fetch("/notes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, content })
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          statusEl.textContent = "Failed to save note: " + errText;
+        } else {
+          statusEl.textContent = "Note saved!";
+          titleEl.value = "";
+          contentEl.value = "";
+          loadNotes();
+        }
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "Error saving note. Check console.";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    checkServer();
+    loadNotes();
+  </script>
+</body>
+</html>
