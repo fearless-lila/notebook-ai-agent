@@ -6,11 +6,15 @@ from .schemas import NoteCreate, Note, ChatRequest, ChatResponse, RetrievedConte
 from .embeddings import embed_texts
 from .vector_store import add_documents, query_documents
 from .llm import answer_with_context
+from .storage import load_notes, save_notes
+
 
 app = FastAPI(title="Second Brain Note Assistant")
 
 # Simple in-memory store (demo only)
-NOTES_DB: dict[str, dict] = {}
+NOTES_DB: dict[str, dict] = load_notes()
+print(f"📂 Loaded {len(NOTES_DB)} notes from disk at startup.")
+
 
 @app.post("/notes", response_model=Note)
 def create_note(note: NoteCreate):
@@ -33,7 +37,11 @@ def create_note(note: NoteCreate):
         "content": note.content,
     }
 
+    # 💾 save notes to JSON file on disk
+    save_notes(NOTES_DB)
+
     return Note(**NOTES_DB[note_id])
+
 
 @app.get("/notes", response_model=List[Note])
 def list_notes():

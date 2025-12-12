@@ -1,4 +1,3 @@
 Things I want to remember:  
-- Keep improving daily  
-- Practice coding and AI  
-- Live tracing AB test meeting has included CTA as important metric. It is on whoosh platform.
+- need to return clothes to zara, 5 intotal
+- need to return 1 jumper to tkmaxx before 28/12

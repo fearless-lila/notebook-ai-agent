@@ -1,0 +1,7 @@
+{
+  "79a98daf-6fdd-4ec4-b89c-fd33d0bd7693": {
+    "id": "79a98daf-6fdd-4ec4-b89c-fd33d0bd7693",
+    "title": "Persistence test note",
+    "content": "This note should still exist after restart."
+  }
+}
