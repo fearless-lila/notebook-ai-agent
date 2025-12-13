@@ -3,5 +3,10 @@
     "id": "79a98daf-6fdd-4ec4-b89c-fd33d0bd7693",
     "title": "Persistence test note",
     "content": "This note should still exist after restart."
+  },
+  "1a0524eb-45bb-491f-9e4b-1c3178de3de5": {
+    "id": "1a0524eb-45bb-491f-9e4b-1c3178de3de5",
+    "title": "Checkout Conversion AB Test",
+    "content": "## Variant A – Control\n\n- Current 3-step flow:\n  1. Shipping address\n  2. Shipping method\n  3. Payment & review\n- Order summary is only visible on the last step.\n- “Complete order” button is below the fold on smaller screens.\n- No explicit trust badges or security copy.\n\n## Variant B – Simplified Layout\n\nGoal: reduce friction and clicks.\n\nChanges:\n\n- Collapse from **3 steps → 2 steps**:\n  - Step 1: Shipping address + shipping method\n  - Step 2: Payment + order review\n- Always show a **sticky order summary** on the right (desktop) or at the bottom (mobile).\n- Autofill address fields when data is available from profile.\n- Show shipping cost and estimated total as the user edits their address and shipping method.\n- “Complete order” button:\n  - High-contrast gradient (brand pink → blue)\n  - Always above the fold on 1024px height and above."
   }
 }

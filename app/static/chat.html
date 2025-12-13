@@ -231,6 +231,39 @@
       color: var(--text-muted);
     }
 
+    /* Markdown formatting for the answer */
+    .answer-markdown {
+      line-height: 1.5;
+    }
+
+    .answer-markdown h1,
+    .answer-markdown h2,
+    .answer-markdown h3 {
+      margin: 0.4rem 0 0.2rem;
+      font-weight: 600;
+    }
+
+    .answer-markdown p {
+      margin: 0.25rem 0;
+    }
+
+    .answer-markdown ul {
+      margin: 0.25rem 0 0.25rem 1.25rem;
+      padding-left: 1rem;
+    }
+
+    .answer-markdown li {
+      margin: 0.15rem 0;
+    }
+
+    .answer-markdown code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9em;
+      background: #e5e7eb;
+      padding: 0.05rem 0.25rem;
+      border-radius: 0.25rem;
+    }
+
     @media (max-width: 800px) {
       .page { padding: 1rem; }
       .panel { padding: 1.25rem 1.25rem 1.5rem; }
@@ -276,6 +309,9 @@
       </div>
     </section>
   </div>
+
+  <!-- Markdown parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script>
     async function checkServer() {
@@ -324,10 +360,14 @@
         const data = await res.json();
         statusEl.textContent = "";
 
+        // Render markdown answer
         const answerDiv = document.createElement("div");
-        answerDiv.textContent = data.answer || "(No answer returned)";
+        answerDiv.className = "answer-markdown";
+        const rawAnswer = data.answer || "(No answer returned)";
+        answerDiv.innerHTML = marked.parse(rawAnswer);
         outputEl.appendChild(answerDiv);
 
+        // Contexts below the answer
         if (Array.isArray(data.contexts) && data.contexts.length > 0) {
           const ctxDiv = document.createElement("div");
           ctxDiv.className = "contexts";
