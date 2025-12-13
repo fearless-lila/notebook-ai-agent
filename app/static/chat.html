@@ -213,6 +213,7 @@
     }
 
     .chat-output {
+      margin-top: 0.9rem; /* NEW: match spacing above/below Ask button */
       border-radius: 0.8rem;
       border: 1px solid var(--border-soft);
       padding: 0.9rem;
@@ -297,7 +298,7 @@
       <div class="chat-section">
         <label>
           Question
-          <textarea id="chat-question" rows="4" placeholder="What did I write about RAG?"></textarea>
+          <textarea id="chat-question" rows="4" placeholder="What did I write about the Checkout Conversion test?"></textarea>
         </label>
 
         <button id="ask-btn" onclick="askQuestion()">Ask</button>

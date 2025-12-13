@@ -8,5 +8,15 @@
     "id": "1a0524eb-45bb-491f-9e4b-1c3178de3de5",
     "title": "Checkout Conversion AB Test",
     "content": "## Variant A – Control\n\n- Current 3-step flow:\n  1. Shipping address\n  2. Shipping method\n  3. Payment & review\n- Order summary is only visible on the last step.\n- “Complete order” button is below the fold on smaller screens.\n- No explicit trust badges or security copy.\n\n## Variant B – Simplified Layout\n\nGoal: reduce friction and clicks.\n\nChanges:\n\n- Collapse from **3 steps → 2 steps**:\n  - Step 1: Shipping address + shipping method\n  - Step 2: Payment + order review\n- Always show a **sticky order summary** on the right (desktop) or at the bottom (mobile).\n- Autofill address fields when data is available from profile.\n- Show shipping cost and estimated total as the user edits their address and shipping method.\n- “Complete order” button:\n  - High-contrast gradient (brand pink → blue)\n  - Always above the fold on 1024px height and above."
+  },
+  "fb2ccd0d-2c46-4a90-9b7b-e01f30b01f51": {
+    "id": "fb2ccd0d-2c46-4a90-9b7b-e01f30b01f51",
+    "title": "Price compare AB test",
+    "content": "On our ecommerce site, users can see the price of the product they’re viewing, but:\n\n- They **cannot easily compare** it with similar products without going back to the category page or search results.\n- Session recordings show users:\n  - Bounce back and forth between multiple tabs\n  - Abandon when they feel unsure if they’re getting a good deal\n- Customer interviews mention:\n  - “I’m not sure if this is the best option for me.”\n  - “I end up checking 3–4 similar products before deciding.”\n\nWe want to test whether adding an **inline price comparison widget** on the product detail page (PDP) will help users decide faster and increase add-to-cart and purchase rates.\n\nPrimary metric:\n- **PDP Purchase Conversion**  \n  `purchases / PDP_sessions` for the tested products"
+  },
+  "df26a4f5-2310-4254-b28f-15c04900c004": {
+    "id": "df26a4f5-2310-4254-b28f-15c04900c004",
+    "title": "Price compare AB test",
+    "content": "Secondary metrics:\n- Add-to-cart rate from PDP\n- Click-through rate (CTR) on the price compare widget\n- Time spent on PDP (we expect a **small increase or stable**, not a big spike)\n\nVariant A – Control (No Price Compare Widget)\n- Standard product detail page:\n  - Main product image, title, price, reviews, description\n  - “Similar products” shown **only** in the carousel at the very bottom\n\nVariant B – Price Compare Widget (Treatment)\n**New feature:** a compact **price compare module** just below the main price."
   }
 }

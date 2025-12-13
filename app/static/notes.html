@@ -202,38 +202,6 @@
       margin-top: 0.5rem;
     }
 
-    .notes-list {
-      margin-top: 1rem;
-      padding: 0.75rem 0.75rem 0.5rem;
-      border-radius: 0.8rem;
-      background: #f9fafb;
-      border: 1px solid var(--border-soft);
-      font-size: 0.9rem;
-      max-height: 220px;
-      overflow-y: auto;
-    }
-
-    .note-item {
-      padding: 0.5rem 0.25rem;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .note-item:last-child {
-      border-bottom: none;
-    }
-
-    .note-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
-
-    .note-content {
-      color: var(--text-muted);
-      margin-top: 0.15rem;
-      white-space: pre-wrap;
-      line-height: 1.3;
-    }
-
     @media (max-width: 800px) {
       .page { padding: 1rem; }
       .panel { padding: 1.25rem 1.25rem 1.5rem; }
@@ -265,22 +233,16 @@
       <div class="note-section">
         <label>
           Title
-          <input id="note-title" type="text" placeholder="e.g. RAG basics" />
+          <input id="note-title" type="text" placeholder="e.g. Price Compare AB Test" />
         </label>
 
         <label>
           Content
-          <textarea id="note-content" rows="6" placeholder="Write your note here..."></textarea>
+          <textarea id="note-content" rows="8" placeholder="Write your note here..."></textarea>
         </label>
 
         <button id="save-note-btn" onclick="createNote()">Save note</button>
         <div id="note-status" class="status"></div>
-      </div>
-
-      <div class="note-section">
-        <div class="notes-list" id="notes-list">
-          <div class="status">Loading notes...</div>
-        </div>
       </div>
     </section>
   </div>
@@ -297,46 +259,6 @@
         }
       } catch (err) {
         el.textContent = "Cannot reach server. Is uvicorn running?";
-      }
-    }
-
-    async function loadNotes() {
-      const list = document.getElementById("notes-list");
-      list.innerHTML = '<div class="status">Loading notes...</div>';
-
-      try {
-        const res = await fetch("/notes");
-        if (!res.ok) {
-          list.innerHTML = '<div class="status">Failed to load notes.</div>';
-          return;
-        }
-        const notes = await res.json();
-        if (!Array.isArray(notes) || notes.length === 0) {
-          list.innerHTML = '<div class="status">No API-created notes yet. Create one above.</div>';
-          return;
-        }
-
-        list.innerHTML = "";
-        notes.forEach(note => {
-          const item = document.createElement("div");
-          item.className = "note-item";
-
-          const title = document.createElement("div");
-          title.className = "note-title";
-          title.textContent = note.title;
-
-          const content = document.createElement("div");
-          content.className = "note-content";
-          const text = note.content || "";
-          content.textContent = text.length > 300 ? text.slice(0, 300) + "..." : text;
-
-          item.appendChild(title);
-          item.appendChild(content);
-          list.appendChild(item);
-        });
-      } catch (err) {
-        console.error(err);
-        list.innerHTML = '<div class="status">Error loading notes.</div>';
       }
     }
 
@@ -368,10 +290,9 @@
           const errText = await res.text();
           statusEl.textContent = "Failed to save note: " + errText;
         } else {
-          statusEl.textContent = "Note saved!";
+          statusEl.textContent = "Note saved! It will be available to the chat.";
           titleEl.value = "";
           contentEl.value = "";
-          loadNotes();
         }
       } catch (err) {
         console.error(err);
@@ -382,7 +303,6 @@
     }
 
     checkServer();
-    loadNotes();
   </script>
 </body>
 </html>
